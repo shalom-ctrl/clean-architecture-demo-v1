@@ -1,4 +1,6 @@
-﻿using Demo.Infrastructure.Data;
+﻿using Demo.Domain.Interface;
+using Demo.Infrastructure.Data;
+using Demo.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,6 +19,9 @@ namespace Demo.Infrastructure
             {
                 options.UseSqlServer("Server=.\\MSSQLSERVERV17;Database=CleanArchitectureDB;Trusted_Connection=True;TrustServerCertificate=True;");
             });
+
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
             return services;
         }
     }
