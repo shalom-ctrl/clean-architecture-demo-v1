@@ -1,15 +1,17 @@
 ﻿using Demo.Application.Commands;
 using Demo.Application.Queries;
 using Demo.Domain.Entities;
+using Demo.Domain.Options;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace clean_architecture_demo_v1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController(IMediator mediator) : ControllerBase
+    public class EmployeeController(IMediator mediator, IOptions<ConnectionStringOptions> connectionStringOptions) : ControllerBase
     {
         [HttpPost("")]
         public async Task<IActionResult> AddEmployeeAsync([FromBody] Employee employee)
@@ -21,8 +23,8 @@ namespace clean_architecture_demo_v1.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEmployeeAsync()
         {
-            var result = await mediator.Send(new GetAllEmployeesQuery());
-            return Ok(result);
+            //var result = await mediator.Send(new GetAllEmployeesQuery());
+            return Ok(connectionStringOptions.Value.DefaultConnection);
         }
 
         [HttpGet("{id}")]
