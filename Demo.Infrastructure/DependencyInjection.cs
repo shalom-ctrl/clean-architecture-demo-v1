@@ -2,6 +2,7 @@
 using Demo.Domain.Options;
 using Demo.Infrastructure.Data;
 using Demo.Infrastructure.Repository;
+using Demo.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,14 @@ namespace Demo.Infrastructure
             });
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
+
+            services.AddHttpClient<ICoinDeskHttpClientService, CoinDeskHttpClientService>();
+            services.AddHttpClient<IJokeHttpClientService, JokeHttpClientService>(option =>
+            {
+                option.BaseAddress = new Uri("https://official-joke-api.appspot.com/");
+            });
+
 
             return services;
         }
